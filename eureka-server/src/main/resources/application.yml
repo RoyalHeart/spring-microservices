@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: ${EUREKA_SERVER:eureka-server}
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+    hikari:
+      schema: public
+  main:
+    banner-mode: console
+
+server:
+  port: ${PORT:8761}
+
+# What's a client server? See other microservices (image, gallery, auth, etc).
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+  instance:
+    hostname: ${HOSTNAME:localhost}
+    preferIpAddress: true

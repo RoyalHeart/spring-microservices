@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "custom.jwt.valid-time",
+    "type": "java.lang.String",
+    "description": "A description for 'custom.jwt.valid-time'"
+  },
+  {
+    "name": "custom.jwt.base64Secret",
+    "type": "java.lang.String",
+    "description": "A description for 'custom.jwt.base64Secret'"
+  }
+]}

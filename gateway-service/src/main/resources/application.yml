@@ -1,0 +1,26 @@
+server:
+  port: ${PORT:8800}
+
+spring:
+  application:
+    name: ${EUREKA_CLIENT:gateway-service}
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka
+  instance:
+    hostname: ${HOSTNAME:localhost}
+
+custom: 
+  jwt:
+    valid-time: 6000
+    base64Secret: ${JWT_SECRET}
+
+logging:
+  level:
+    "[org.springframework]": DEBUG

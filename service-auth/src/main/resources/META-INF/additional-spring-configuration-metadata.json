@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "jwt.access-valid-time",
+      "type": "java.lang.Integer",
+      "description": "JWT valid access token time"
+    },
+    {
+      "name": "jwt.refresh-valid-time",
+      "type": "java.lang.Integer",
+      "description": "JWT valid refresh token time"
+    },
+    {
+      "name": "jwt.base64-secret",
+      "type": "java.lang.String",
+      "description": "JWT secret on server"
+    }
+  ]
+}
