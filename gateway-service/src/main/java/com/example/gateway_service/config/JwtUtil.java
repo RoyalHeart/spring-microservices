@@ -29,6 +29,7 @@ public class JwtUtil {
     public String generateToken(String userName) {
         // Prepare claims for the token
         Map<String, Object> claims = new HashMap<>();
+        claims.put("plan", PricingPlan.FREE.name());
 
         // Build JWT token with claims, subject, issued time, expiration time, and
         // signing algorithm
@@ -78,9 +79,10 @@ public class JwtUtil {
     // return-> Claims object containing all claims.
     public Claims extractAllClaims(String token) {
         // Parse and return all claims from the token
-        return Jwts.parser()
+        Claims claims = Jwts.parser()
                 .verifyWith(getSignKey())
                 .build().parseSignedClaims(token).getPayload();
+        return claims;
     }
 
     // Checks if the JWT token is expired.

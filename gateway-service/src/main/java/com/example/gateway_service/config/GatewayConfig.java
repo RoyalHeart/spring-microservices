@@ -7,6 +7,9 @@
 ******************************************************************************/
 package com.example.gateway_service.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * className
  * 
@@ -16,6 +19,7 @@ package com.example.gateway_service.config;
  */
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
@@ -27,19 +31,25 @@ import org.springframework.context.annotation.Configuration;
 public class GatewayConfig {
 
     @Autowired
-    AuthenticationFilter filter;
+    AuthenticationFilter authFilter;
+
+    @Autowired
+    RateLimitFilter rateLimitFilter;
 
     @Bean
     public RouteLocator routes(RouteLocatorBuilder builder) {
+        List<GatewayFilter> filters = new ArrayList<>();
+        filters.add(authFilter);
+        filters.add(rateLimitFilter);
         return builder.routes()
                 .route("service-auth", r -> r.path("/api/auth/**")
-                        .filters(f -> f.filter(filter))
+                        .filters(f -> f.filters(filters))
                         .uri("lb://SERVICE-AUTH"))
                 .route("service-data", r -> r.path("/api/data/**")
-                        .filters(f -> f.filter(filter))
+                        .filters(f -> f.filters(filters))
                         .uri("lb://SERVICE-DATA"))
                 .route("service-fetch", r -> r.path("/api/fetch/**")
-                        .filters(f -> f.filter(filter))
+                        .filters(f -> f.filters(filters))
                         .uri("lb://service-fetch"))
                 .build();
     }

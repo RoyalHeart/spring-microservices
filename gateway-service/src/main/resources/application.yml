@@ -24,3 +24,4 @@ custom:
 logging:
   level:
     "[org.springframework]": DEBUG
+    "[com.example]" : DEBUG

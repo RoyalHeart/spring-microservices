@@ -34,6 +34,7 @@ public class JwtService {
         // Prepare claims for the token
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", String.join(" ",roles));
+        claims.put("plan", "FREE");
         // Build JWT token with claims, subject, issued time, expiration time, and
         // signing algorithm
         int tokenValidTimeInMilis = jwtConfig.getAccessValidTime();

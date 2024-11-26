@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.example.security.jwt.filter.JwtFilter;
-import com.example.security.service.impl.UserDetailsServiceImpl;
+import com.example.security.service.user.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -58,13 +58,12 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        // .requestMatchers("/login/**", "/signup/**").permitAll()
-                        .requestMatchers("/api/auth/login/**", "/api/auth/signup/**", "/api/auth/refresh-token/**").permitAll()
-                        // .requestMatchers("/api/public/**").permitAll()
+                        .requestMatchers("/api/auth/login/**", "/api/auth/signup/**", "/api/auth/refresh-token/**")
+                        .permitAll()
+                        .requestMatchers("/api/public/**").permitAll()
                         .requestMatchers("/edit/**", "/delete/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
-                // .formLogin(login -> login.loginPage("/login")
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

@@ -1,4 +1,4 @@
-package com.example.security.service.impl;
+package com.example.security.service.user;
 
 import java.util.Arrays;
 import java.util.Collection;
