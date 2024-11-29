@@ -1,8 +1,6 @@
 package com.example.gateway_service.config;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 import javax.crypto.SecretKey;
@@ -22,25 +20,6 @@ public class JwtUtil {
 
     public JwtUtil(CustomProperties customProperties) {
         this.customProperties = customProperties;
-    }
-    // Secret Key for signing the JWT. It should be kept private.
-
-    // Generates a JWT token for the given userName.
-    public String generateToken(String userName) {
-        // Prepare claims for the token
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("plan", PricingPlan.FREE.name());
-
-        // Build JWT token with claims, subject, issued time, expiration time, and
-        // signing algorithm
-        // Token valid for 10 minutes
-        int tokenValidTimeInMilis = customProperties.getJwt().getValidTime();
-        return Jwts.builder()
-                .claims(claims)
-                .subject(userName)
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + tokenValidTimeInMilis))
-                .signWith(getSignKey()).compact();
     }
 
     // Creates a signing key from the base64 encoded secret.

@@ -16,12 +16,12 @@ eureka:
   instance:
     hostname: ${HOSTNAME:localhost}
 
+logging:
+  level:
+    "[org.springframework]": ERROR
+    "[com.example]" : ERROR
+
 custom: 
   jwt:
     valid-time: 6000
     base64Secret: ${JWT_SECRET}
-
-logging:
-  level:
-    "[org.springframework]": DEBUG
-    "[com.example]" : DEBUG

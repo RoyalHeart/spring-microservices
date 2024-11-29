@@ -12,7 +12,6 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -22,14 +21,6 @@ import com.example.gateway_service.service.PricingPlanService;
 
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.ConsumptionProbe;
-/**
- * className
- * 
- * @version 01-00
- * @since 01-00
- * @author TamTH1
- */
-import io.jsonwebtoken.Claims;
 import io.micrometer.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
@@ -59,7 +50,8 @@ public class RateLimitFilter implements GatewayFilter {
         } catch (Exception e) {
             log.debug("> No Authorization");
         }
-        if (StringUtils.isNotBlank(authHeader)) {
+        boolean hasAuth = StringUtils.isNotBlank(authHeader);
+        if (hasAuth) {
             final String[] authHeaders = authHeader.split("\s");
             final String jwt = authHeaders[1];
             String username = jwtUtil.extractUserName(jwt);
@@ -77,6 +69,7 @@ public class RateLimitFilter implements GatewayFilter {
                 return onError(exchange, HttpStatus.TOO_MANY_REQUESTS);
             }
         } else {
+            // Default bucket for all user on public api
             ConsumptionProbe probe = bucket.tryConsumeAndReturnRemaining(1);
             if (probe.isConsumed()) {
                 exchange.getResponse().getHeaders().add("X-Rate-Limit-Remaining",
@@ -112,12 +105,5 @@ public class RateLimitFilter implements GatewayFilter {
 
     private String getAuthHeader(ServerHttpRequest request) throws Exception {
         return request.getHeaders().getOrEmpty("Authorization").get(0);
-    }
-
-    private void updateRequest(ServerWebExchange exchange, String token) {
-        Claims claims = jwtUtil.extractAllClaims(token);
-        exchange.getRequest().mutate()
-                .header("email", String.valueOf(claims.get("email")))
-                .build();
     }
 }

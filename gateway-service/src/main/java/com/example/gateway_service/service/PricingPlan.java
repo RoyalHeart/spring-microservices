@@ -5,7 +5,7 @@
  * Author       :TamTH1
  * Change log   :2024/11/26 01-00 TamTH1 create a new
 ******************************************************************************/
-package com.example.gateway_service.config;
+package com.example.gateway_service.service;
 
 import java.time.Duration;
 

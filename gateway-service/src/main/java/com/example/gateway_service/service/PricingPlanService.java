@@ -14,8 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import com.example.gateway_service.config.PricingPlan;
-
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Refill;
@@ -37,6 +35,7 @@ public class PricingPlanService {
     private final Bucket bucket = Bucket.builder()
             .addLimit(Bandwidth.classic(1000, Refill.greedy(1000, Duration.ofMinutes(1)))).build();
 
+    @SuppressWarnings("unused")
     public Bucket resolveBucket(String username, String plan) {
         return cache.computeIfAbsent(username, (temp) -> {
             return newBucket(plan);
