@@ -26,6 +26,9 @@ import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.example.gateway_service.filter.AuthenticationFilter;
+import com.example.gateway_service.filter.RateLimitFilter;
+
 @Configuration
 @EnableHystrix
 public class GatewayConfig {

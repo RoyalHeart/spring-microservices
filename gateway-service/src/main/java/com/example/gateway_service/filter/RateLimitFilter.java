@@ -5,7 +5,7 @@
  * Author       :TamTH1
  * Change log   :2024/08/19 01-00 TamTH1 create a new
 ******************************************************************************/
-package com.example.gateway_service.config;
+package com.example.gateway_service.filter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -17,6 +17,7 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 
+import com.example.gateway_service.config.JwtUtil;
 import com.example.gateway_service.service.PricingPlanService;
 
 import io.github.bucket4j.Bucket;
