@@ -24,10 +24,9 @@ import org.springframework.stereotype.Component;
 public class RouterValidator {
 
     public static final List<String> openApiEndpoints = List.of(
-            "/api/auth/"
-            );
+            "/api/auth/");
 
-    public Predicate<ServerHttpRequest> isSecured = request -> openApiEndpoints
+    public Predicate<ServerHttpRequest> securedRoute = request -> openApiEndpoints
             .stream()
             .noneMatch(uri -> request.getURI().getPath().contains(uri));
 

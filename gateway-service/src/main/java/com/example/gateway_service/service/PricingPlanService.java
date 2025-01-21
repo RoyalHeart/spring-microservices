@@ -11,8 +11,10 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import com.example.gateway_service.prop.CustomProperties;
+import com.example.gateway_service.prop.RateLimit;
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
@@ -27,23 +29,27 @@ import lombok.extern.slf4j.Slf4j;
  * @author TamTH1
  */
 @Service
-@Component
 @Slf4j
 public class PricingPlanService {
+    private CustomProperties customProperties;
+
+    public PricingPlanService(CustomProperties customProperties) {
+        this.customProperties = customProperties;
+    }
 
     private final Map<String, Bucket> cache = new ConcurrentHashMap<>();
-    private final Bucket bucket = Bucket.builder()
-            .addLimit(Bandwidth.classic(1000, Refill.greedy(1000, Duration.ofMinutes(1)))).build();
 
-    @SuppressWarnings("unused")
     public Bucket resolveBucket(String username, String plan) {
-        return cache.computeIfAbsent(username, (temp) -> {
-            return newBucket(plan);
-        });
+        return cache.computeIfAbsent(username, _ -> newBucket(plan));
     }
 
     public Bucket getDefaultBucket() {
-        return bucket;
+        RateLimit rateLimitConfig = customProperties.getRateLimit();
+        return Bucket.builder()
+                .addLimit(Bandwidth.classic(rateLimitConfig.getCapacity(),
+                        Refill.greedy(rateLimitConfig.getRefillAmount(),
+                                Duration.ofMinutes(rateLimitConfig.getRefillMinutes()))))
+                .build();
     }
 
     private Bucket newBucket(String plan) {

@@ -5,8 +5,23 @@
     "description": "A description for 'custom.jwt.valid-time'"
   },
   {
-    "name": "custom.jwt.base64Secret",
+    "name": "custom.jwt.base64-secret",
     "type": "java.lang.String",
     "description": "A description for 'custom.jwt.base64Secret'"
+  },
+  {
+    "name": "custom.rate-limit.capacity",
+    "type": "java.lang.String",
+    "description": "Rate limit capacity"
+  },
+  {
+    "name": "custom.rate-limit.refill-amount",
+    "type": "java.lang.String",
+    "description": "Refill amount"
+  },
+  {
+    "name": "custom.rate-limit.refill-minutes",
+    "type": "java.lang.String",
+    "description": "Refill minutes"
   }
 ]}

@@ -8,6 +8,8 @@ import javax.crypto.SecretKey;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
+import com.example.gateway_service.prop.CustomProperties;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;

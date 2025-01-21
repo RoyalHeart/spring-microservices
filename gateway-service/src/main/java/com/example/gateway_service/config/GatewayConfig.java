@@ -10,15 +10,6 @@ package com.example.gateway_service.config;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * className
- * 
- * @version 01-00
- * @since 01-00
- * @author TamTH1
- */
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
@@ -33,14 +24,9 @@ import com.example.gateway_service.filter.RateLimitFilter;
 @EnableHystrix
 public class GatewayConfig {
 
-    @Autowired
-    AuthenticationFilter authFilter;
-
-    @Autowired
-    RateLimitFilter rateLimitFilter;
-
     @Bean
-    public RouteLocator routes(RouteLocatorBuilder builder) {
+    RouteLocator routes(RouteLocatorBuilder builder, AuthenticationFilter authFilter,
+            RateLimitFilter rateLimitFilter) {
         List<GatewayFilter> filters = new ArrayList<>();
         filters.add(authFilter);
         filters.add(rateLimitFilter);

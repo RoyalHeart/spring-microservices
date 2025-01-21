@@ -34,12 +34,12 @@ public class RateLimitFilter implements GatewayFilter {
     private final JwtUtil jwtUtil;
     @Autowired
     private final PricingPlanService pricingPlanService;
-    private final Bucket bucket;
+    private final Bucket publicBucket;
 
     public RateLimitFilter(JwtUtil jwtUtil, PricingPlanService pricingPlanService) {
         this.jwtUtil = jwtUtil;
         this.pricingPlanService = pricingPlanService;
-        this.bucket = pricingPlanService.getDefaultBucket();
+        this.publicBucket = pricingPlanService.getDefaultBucket();
     }
 
     @Override
@@ -71,7 +71,7 @@ public class RateLimitFilter implements GatewayFilter {
             }
         } else {
             // Default bucket for all user on public api
-            ConsumptionProbe probe = bucket.tryConsumeAndReturnRemaining(1);
+            ConsumptionProbe probe = publicBucket.tryConsumeAndReturnRemaining(1);
             if (probe.isConsumed()) {
                 exchange.getResponse().getHeaders().add("X-Rate-Limit-Remaining",
                         Long.toString(probe.getRemainingTokens()));
@@ -83,18 +83,6 @@ public class RateLimitFilter implements GatewayFilter {
             }
         }
 
-        // bucket.
-
-        // boolean isInvalidJwt = false;
-        // try {
-        // isInvalidJwt = jwtUtil.isInvalid(token);
-        // } catch (Exception e) {
-        // return this.onError(exchange, HttpStatus.FORBIDDEN);
-        // }
-        // if (isInvalidJwt) {
-        // return this.onError(exchange, HttpStatus.FORBIDDEN);
-        // }
-        // this.updateRequest(exchange, token);
         return chain.filter(exchange);
     }
 
@@ -104,7 +92,7 @@ public class RateLimitFilter implements GatewayFilter {
         return response.setComplete();
     }
 
-    private String getAuthHeader(ServerHttpRequest request) throws Exception {
+    private String getAuthHeader(ServerHttpRequest request) {
         return request.getHeaders().getOrEmpty("Authorization").get(0);
     }
 }

@@ -23,5 +23,9 @@ logging:
 
 custom: 
   jwt:
-    valid-time: 6000
-    base64Secret: ${JWT_SECRET}
+    valid-time: 600000
+    base64-secret: ${JWT_SECRET}
+  rate-limit:
+    capacity: ${RATE_CAPACITY:1000} 
+    refill-amount: ${RATE_AMOUNT:1000}
+    refill-minutes: ${RATE_MINUTES:1}
