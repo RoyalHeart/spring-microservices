@@ -1,7 +1,6 @@
 package com.example.security.service.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +15,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetailsImpl loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDetail user = userRepository.findByUsername(username);
 
         if (user == null) {

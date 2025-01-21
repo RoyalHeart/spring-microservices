@@ -4,14 +4,15 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.example.security.service.impl.RequestResponseLog;
+import com.example.security.filter.RequestResponseLogFilter;
 
 @Configuration
 public class WebConfig {
 
     @Bean
-    public FilterRegistrationBean<RequestResponseLog> loggingFilter(RequestResponseLog requestResponseLoggingFilter) {
-        FilterRegistrationBean<RequestResponseLog> registrationBean = new FilterRegistrationBean<>();
+    FilterRegistrationBean<RequestResponseLogFilter> loggingFilter(
+            RequestResponseLogFilter requestResponseLoggingFilter) {
+        FilterRegistrationBean<RequestResponseLogFilter> registrationBean = new FilterRegistrationBean<>();
 
         registrationBean.setFilter(requestResponseLoggingFilter);
         registrationBean.addUrlPatterns("/api/*");

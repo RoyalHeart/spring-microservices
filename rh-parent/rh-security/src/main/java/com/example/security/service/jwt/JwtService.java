@@ -1,4 +1,4 @@
-package com.example.security.jwt;
+package com.example.security.service.jwt;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -30,11 +30,11 @@ public class JwtService {
     // Secret Key for signing the JWT. It should be kept private.
 
     // Generates a JWT token for the given userName.
-    public String generateAccessToken(String userName, List<String> roles) {
+    public String generateAccessToken(String userName, List<String> roles, String pricingPlan) {
         // Prepare claims for the token
         Map<String, Object> claims = new HashMap<>();
-        claims.put("roles", String.join(" ",roles));
-        claims.put("plan", "FREE");
+        claims.put("roles", String.join(" ", roles));
+        claims.put("plan", pricingPlan);
         // Build JWT token with claims, subject, issued time, expiration time, and
         // signing algorithm
         int tokenValidTimeInMilis = jwtConfig.getAccessValidTime();
@@ -61,6 +61,7 @@ public class JwtService {
                 .expiration(new Date(System.currentTimeMillis() + tokenValidTimeInMilis))
                 .signWith(getSignKey()).compact();
     }
+
     // Creates a signing key from the base64 encoded secret.
     // returns a Key object for signing the JWT.
     private SecretKey getSignKey() {
@@ -112,7 +113,7 @@ public class JwtService {
     // Validates the JWT token against the UserDetails.
     // return-> True if the token is valid, false otherwise.
 
-    public Boolean validateToken(HttpServletRequest request, String token, UserDetails userDetails) {
+    public boolean validateToken(HttpServletRequest request, String token, UserDetails userDetails) {
         final String userName = extractUserName(token);
         // not check when at auth api
         if (request.getRequestURL().toString().contains("auth")) {

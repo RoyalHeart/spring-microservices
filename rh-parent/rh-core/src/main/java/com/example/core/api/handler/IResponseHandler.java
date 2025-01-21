@@ -7,4 +7,5 @@ public interface IResponseHandler {
     public BaseResponse handleSuccessRequest(Object data, long start);
 
     public BaseResponse handleErrorRequest(Exception e, Object data, long start);
+    public BaseResponse handleErrorRequest(Exception e, long start);
 }

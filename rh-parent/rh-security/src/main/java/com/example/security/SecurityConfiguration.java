@@ -15,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.example.security.jwt.filter.JwtFilter;
+import com.example.security.filter.JwtFilter;
 import com.example.security.service.user.UserDetailsServiceImpl;
 
 @Configuration
@@ -23,23 +23,23 @@ import com.example.security.service.user.UserDetailsServiceImpl;
 public class SecurityConfiguration {
 
     @Bean
-    public UserDetailsService userDetailsService() {
+    UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
+    BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     // Defines an AuthenticationManager bean to manage authentication processes
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+    AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
+    DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setHideUserNotFoundExceptions(false);
         authProvider.setUserDetailsService(userDetailsService());
@@ -48,17 +48,18 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public AuthenticationFailureHandler authenticationFailureHandler() {
+    AuthenticationFailureHandler authenticationFailureHandler() {
         return new AuthenticationFailureHandlerImpl();
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, JwtFilter jwtFilter,
+    SecurityFilterChain filterChain(HttpSecurity http, JwtFilter jwtFilter,
             UserDetailsService userDetailsService) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/auth/login/**", "/api/auth/signup/**", "/api/auth/refresh-token/**")
+                        .requestMatchers("/api/auth/login/**", "/api/auth/signup/**",
+                                "/api/auth/refresh-token/**")
                         .permitAll()
                         .requestMatchers("/api/public/**").permitAll()
                         .requestMatchers("/edit/**", "/delete/**").hasRole("ADMIN")

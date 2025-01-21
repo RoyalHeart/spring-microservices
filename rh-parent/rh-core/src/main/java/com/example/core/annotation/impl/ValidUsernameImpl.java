@@ -9,11 +9,7 @@ import jakarta.validation.ConstraintValidatorContext;
 public class ValidUsernameImpl implements ConstraintValidator<ValidUsername, String> {
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (Validate.isUsernameValid(value)) {
-            return true;
-        } else {
-            return false;
-        }
+        return Validate.isUsernameValid(value);
     }
 
 }

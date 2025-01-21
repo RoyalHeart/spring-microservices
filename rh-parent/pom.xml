@@ -17,7 +17,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <rh.version>1.0-SNAPSHOT</rh.version>
-        <spring.boot.version>3.3.6</spring.boot.version>
+        <spring.boot.version>3.3.7</spring.boot.version>
     </properties>
 
     <modules>

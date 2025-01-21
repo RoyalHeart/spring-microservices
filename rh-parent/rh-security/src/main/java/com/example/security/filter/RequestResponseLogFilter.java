@@ -1,10 +1,13 @@
-package com.example.security.service.impl;
+package com.example.security.filter;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.util.ContentCachingRequestWrapper;
+import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -17,17 +20,27 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class RequestResponseLog implements Filter {
+public class RequestResponseLogFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        String requestMessage = ">>>[%1s]%2s".formatted(request.getMethod(), request.getRequestURI() + getParameters(request));
-        log.info(requestMessage);
-        filterChain.doFilter(request, response);
-        log.info(">>>["+response.getStatus()+"][" + response + "]");
+        String requestMessage = ">>>[%1s]%2s".formatted(request.getMethod(),
+                request.getRequestURI() + getParameters(request));
+        ContentCachingRequestWrapper req = new ContentCachingRequestWrapper(request);
+        ContentCachingResponseWrapper resp = new ContentCachingResponseWrapper(response);
+        // Execution request chain
+        filterChain.doFilter(req, resp);
+        // Get Cache
+        byte[] requestBody = req.getContentAsByteArray();
+        byte[] responseBody = resp.getContentAsByteArray();
+        log.trace(requestMessage);
+        log.trace(">>>request body = {}", new String(requestBody, StandardCharsets.UTF_8));
+        log.trace(">>>[" + response.getStatus() + "][" + response.getCharacterEncoding() + "]");
+        log.trace(">>>response body = {}", new String(responseBody, StandardCharsets.UTF_8));
+        resp.copyBodyToResponse();
     }
 
     private String getParameters(HttpServletRequest request) {
@@ -60,7 +73,7 @@ public class RequestResponseLog implements Filter {
 
     private String getRemoteAddr(HttpServletRequest request) {
         String ipFromHeader = request.getHeader("X-FORWARDED-FOR");
-        if (ipFromHeader != null && ipFromHeader.length() > 0) {
+        if (ipFromHeader != null && !ipFromHeader.isEmpty()) {
             return ipFromHeader;
         }
         return request.getRemoteAddr();

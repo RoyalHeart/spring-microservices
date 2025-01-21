@@ -1,4 +1,4 @@
-package com.example.security.jwt.filter;
+package com.example.security.filter;
 
 import java.io.IOException;
 
@@ -7,19 +7,21 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.security.jwt.JwtService;
+import com.example.security.service.jwt.JwtService;
+import com.example.security.service.user.UserDetailsImpl;
+import com.example.security.service.user.UserDetailsServiceImpl;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 @Configuration
+@Slf4j
 public class JwtFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -30,8 +32,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
     // Method to lazily fetch the UserService bean from the ApplicationContext
     // This is done to avoid Circular Dependency issues
-    private UserDetailsService getUserService() {
-        return applicationContext.getBean(UserDetailsService.class);
+    private UserDetailsServiceImpl getUserService() {
+        return applicationContext.getBean(UserDetailsServiceImpl.class);
     }
 
     @Override
@@ -42,11 +44,6 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = null;
         String userName = null;
 
-        if (request.getRequestURL().toString().contains("auth")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             // Extracting the token from the Authorization header
             token = authHeader.substring(7);
@@ -55,9 +52,9 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = getUserService().loadUserByUsername(userName);
+            UserDetailsImpl userDetails = getUserService().loadUserByUsername(userName);
 
-            if (Boolean.TRUE.equals(jwtService.validateToken(request, token, userDetails))) {
+            if (jwtService.validateToken(request, token, userDetails)) {
                 // Creating an authentication token using UserDetails
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
                         null, userDetails.getAuthorities());
