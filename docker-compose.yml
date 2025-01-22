@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  eureka:
+    container_name: eureka
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    networks:
+      - spring-network
+  gateway:
+    container_name: gateway
+    build:
+      context: ./gateway-service
+      dockerfile: Dockerfile
+    ports:
+      - "8800:8800"
+    env_file: .env
+    depends_on:
+      - eureka
+    networks:
+      - spring-network
+  auth:
+    container_name: auth
+    build:
+      context: ./service-auth
+      dockerfile: Dockerfile
+    ports:
+      - "8020:8020"
+    env_file: .env
+    depends_on:
+      - eureka
+    networks:
+      - spring-network
+  data:
+    container_name: data
+    build:
+      context: ./service-data
+      dockerfile: Dockerfile
+    ports:
+      - "8030:8030"
+    env_file: .env
+    depends_on:
+      - eureka
+    networks:
+      - spring-network
+  fetch:
+    container_name: fetch
+    build:
+      context: ./service-fetch
+      dockerfile: Dockerfile
+    ports:
+      - "8040:8040"
+    env_file: .env
+    depends_on:
+      - eureka
+    networks:
+      - spring-network
+  message:
+    container_name: message
+    build:
+      context: ./service-message
+      dockerfile: Dockerfile
+    ports:
+      - "8050:8050"
+    env_file: .env
+    depends_on:
+      - eureka
+    networks:
+      - spring-network
+networks:
+  spring-network:
+    driver: bridge

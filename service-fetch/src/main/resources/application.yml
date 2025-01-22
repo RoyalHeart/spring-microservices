@@ -3,12 +3,12 @@ spring:
     name: ${EUREKA_CLIENT:service-fetch}
 
 server:
-  port: ${PORT:8803}
+  port: ${PORT:8040}
 
 eureka:
   client:
-    service-url:
-      default-zone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
   instance:
     hostname: ${HOSTNAME:localhost}
     # preferIpAddress: true

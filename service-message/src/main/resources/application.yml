@@ -1,10 +1,6 @@
 spring:
   application:
-    name: ${EUREKA_CLIENT:service-auth}
-  servlet:
-    multipart.max-file-size: 1MB
-  main:
-    allow-bean-definition-overriding: true
+    name: ${EUREKA_CLIENT:message}
   datasource:
     driver-class-name: org.postgresql.Driver
     url: ${POSTGRES_URL}
@@ -12,9 +8,17 @@ spring:
     password: ${POSTGRES_PASSWORD}
     hikari:
       schema: public
+  artemis:
+    mode: native
+    broker-url: ${MESSAGE_BROKER_URL:tcp://localhost:61616}
+    user: ${MESSAGE_BROKER_USERNAME:artemis}
+    password: ${MESSAGE_BROKER_PASSWORD:artemis}
+    # pool:
+    #   enabled: true
+    #   max-connections: 50
 
 server:
-  port: ${PORT:8020}
+  port: ${PORT:8050}
 
 eureka:
   client:
@@ -22,15 +26,12 @@ eureka:
       defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
   instance:
     hostname: ${HOSTNAME:localhost}
-    preferIpAddress: true
-    ip-address: 10.66.6.93
+    # preferIpAddress: true
 
 logging:
   level:
-    '[org.springframework]': ERROR
+    # '[org.springframework]': DEBUG
     '[com.example]': DEBUG
 
-jwt:
-  access-valid-time: 1800000 # 30 minute
-  refresh-valid-time: 86400000 # 1 day
-  base64-secret: ${JWT_SECRET}
+queue:
+  name: queue

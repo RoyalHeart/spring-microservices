@@ -6,10 +6,10 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.6</version>
-        <relativePath /> <!-- lookup parent from repository -->
+        <version>3.3.7</version>
+        <relativePath />
     </parent>
-    <groupId>com.example</groupId>
+    <groupId>com.example.microservices</groupId>
     <artifactId>spring-microservices</artifactId>
     <version>0.0.1</version>
     <name>spring-microservices</name>
@@ -24,6 +24,7 @@
         <module>service-auth</module>
         <module>service-data</module>
         <module>service-fetch</module>
+        <module>service-message</module>
         <module>gateway-service</module>
     </modules>
     <dependencies>
@@ -63,5 +64,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

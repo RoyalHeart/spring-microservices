@@ -10,10 +10,10 @@
         <relativePath>..</relativePath>
     </parent>
     <groupId>com.example.microservices</groupId>
-    <artifactId>service-auth</artifactId>
+    <artifactId>service-message</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>service-auth</name>
-    <description>Authentication service</description>
+    <name>service-message</name>
+    <description>Activemq Artemis</description>
     <url />
     <licenses>
         <license />
@@ -29,31 +29,20 @@
     </scm>
     <properties>
         <java.version>22</java.version>
-        <spring-cloud.version>2023.0.3</spring-cloud.version>
-        <rh.version>1.0-SNAPSHOT</rh.version>
+        <spring-cloud.version>2023.0.4</spring-cloud.version>
     </properties>
     <dependencies>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.example.core</groupId>
-            <artifactId>rh-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
+            <artifactId>rh-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-artemis</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -65,36 +54,18 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools -->
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
-            <version>3.3.2</version>
         </dependency>
-
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.7.3</version>
         </dependency>
     </dependencies>
+
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>com.example.core</groupId>
-                <artifactId>rh-parent</artifactId>
-                <version>${rh.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -104,7 +75,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
     <build>
         <plugins>
             <plugin>

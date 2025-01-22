@@ -4,12 +4,12 @@
     xsi:schemaLocation='http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd'>
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.example</groupId>
+        <groupId>com.example.microservices</groupId>
         <artifactId>spring-microservices</artifactId>
         <version>0.0.1</version>
-        <relativePath /> <!-- lookup parent from repository -->
+        <relativePath>..</relativePath>
     </parent>
-    <groupId>com.example</groupId>
+    <groupId>com.example.microservices</groupId>
     <artifactId>gateway-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>gateway-service</name>
@@ -32,10 +32,6 @@
         <spring-cloud.version>2023.0.3</spring-cloud.version>
     </properties>
     <dependencies>
-        <!-- <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway-mvc</artifactId>
-        </dependency> -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>

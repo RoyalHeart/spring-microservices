@@ -20,5 +20,7 @@ eureka:
     register-with-eureka: false
     fetch-registry: false
   instance:
-    hostname: ${HOSTNAME:localhost}
+    hostname: ${HOSTNAME:eureka}
+    ip-address: ${IP_ADDRESS:10.66.6.93}
+    appname: eureka
     preferIpAddress: true
